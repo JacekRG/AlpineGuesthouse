@@ -1,4 +1,4 @@
-package pl.jacekrg.domain.guest;
+package pl.jacekrg.AlpineGuesthouse.domain.guest;
 
 import lombok.Data;
 

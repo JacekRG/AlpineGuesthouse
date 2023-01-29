@@ -10,18 +10,22 @@
 <body>
 <h2>Lista gości</h2>
 <table>
+    <thead>
     <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Birth Date</th>
-        <th>Gender</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Data urodzenia</th>
+        <th>Płeć</th>
     </tr>
-    <tr>
+    </thead>
+    <tbody>
+    <tr th:each="guest : ${guests}">
         <td th:text="${guest.firstName}"/>
         <td th:text="${guest.lastName}"/>
         <td th:text="${guest.birthDate}"/>
         <td th:text="${guest.gender}"/>
     </tr>
+    </tbody>
 </table>
 </body>
 </html>

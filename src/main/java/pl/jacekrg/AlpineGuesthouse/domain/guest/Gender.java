@@ -1,4 +1,4 @@
-package pl.jacekrg.domain.guest;
+package pl.jacekrg.AlpineGuesthouse.domain.guest;
 
 public enum Gender {
     MALE("Mężczyzna"), FEMALE("Kobieta");
