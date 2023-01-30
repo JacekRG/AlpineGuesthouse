@@ -1,24 +1,33 @@
 package pl.jacekrg.AlpineGuesthouse.domain.room;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Data
+@Entity
 public class Room {
 
-    private final long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
     private String number;
+
+    @ElementCollection(targetClass = BedType.class)
     private List<BedType> beds;
+
     private int size;
 
-    public Room(String number, List<BedType> beds) {
+    private Room() {
 
-        this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+    }
+
+    public Room(String number, List<BedType> beds) {
 
         if (beds == null) {
             throw new IllegalArgumentException("Beds list can not be null");
