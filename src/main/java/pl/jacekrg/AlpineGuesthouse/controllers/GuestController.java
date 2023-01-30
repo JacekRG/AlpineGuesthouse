@@ -3,12 +3,14 @@ package pl.jacekrg.AlpineGuesthouse.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestCreationDTO;
 import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestUpdateDTO;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.Guest;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.GuestService;
 
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/guests")
@@ -33,11 +35,16 @@ public class GuestController {
     }
 
     @PostMapping
-    public String handleCreateNewGuest(GuestCreationDTO dto) {
+    public String handleCreateNewGuest(@Valid GuestCreationDTO dto, BindingResult result, Model model) {
 
-        this.guestService.createNewGuest(dto);
+        if(result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return "createNewGuest";
+        } else {
+            this.guestService.createNewGuest(dto);
+            return "redirect:/guests";
+        }
 
-        return "redirect:/guests";
     }
 
     @GetMapping("/delete/{id}")

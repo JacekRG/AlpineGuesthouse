@@ -1,8 +1,8 @@
 package pl.jacekrg.AlpineGuesthouse.domain.room;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -23,7 +23,7 @@ public class Room {
 
     private int size;
 
-    private Room() {
+    Room() {
 
     }
 

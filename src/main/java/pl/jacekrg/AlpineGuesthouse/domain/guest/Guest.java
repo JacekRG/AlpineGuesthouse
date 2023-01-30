@@ -1,13 +1,10 @@
 package pl.jacekrg.AlpineGuesthouse.domain.guest;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Data
@@ -24,7 +21,7 @@ public class Guest {
     private LocalDate birthDate;
     private Gender gender;
 
-    private Guest() {
+    Guest() {
 
     }
 

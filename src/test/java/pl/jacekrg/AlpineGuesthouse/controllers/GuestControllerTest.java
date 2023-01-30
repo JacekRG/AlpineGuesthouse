@@ -1,7 +1,6 @@
 package pl.jacekrg.AlpineGuesthouse.controllers;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,7 +33,7 @@ public class GuestControllerTest {
     @Test
     public void basic() throws Exception {
 
-        Guest guest = new Guest("Paweł", "Cwik", LocalDate.of(1986, 11, 13), Gender.MALE);
+        Guest guest = new Guest("Paweł", "Placek", LocalDate.of(1986, 11, 13), Gender.MALE);
 
         Mockito.when(guestService.findAll()).thenReturn(Arrays.asList(guest));
 
@@ -48,7 +47,7 @@ public class GuestControllerTest {
     @Test
     public void handlePost() throws Exception {
 
-        String postContent = "firstName=Pawel&lastName=Cwik&dateOfBirth=2021-09-15&gender=FEMALE";
+        String postContent = "firstName=Jacek&lastName=Placek&dateOfBirth=2021-09-15&gender=FEMALE";
 
         MockHttpServletRequestBuilder request =
                 post("/guests")
@@ -60,8 +59,8 @@ public class GuestControllerTest {
                 .andExpect(redirectedUrl("/guests"));
 
         GuestCreationDTO dto = new GuestCreationDTO(
-                "Pawel",
-                "Cwik",
+                "Jacek",
+                "Placek",
                 LocalDate.parse("2021-09-15"),
                 Gender.FEMALE
         );
@@ -87,7 +86,7 @@ public class GuestControllerTest {
         MockHttpServletRequestBuilder request =
                 get("/guests/edit/21");
 
-        Guest guest = new Guest("Paweł", "Cwik", LocalDate.of(1986, 11, 13), Gender.MALE);
+        Guest guest = new Guest("Paweł", "Placek", LocalDate.of(1986, 11, 13), Gender.MALE);
 
         Mockito.when(guestService.getById(21)).thenReturn(guest);
 
