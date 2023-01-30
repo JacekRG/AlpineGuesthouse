@@ -1,25 +1,35 @@
 package pl.jacekrg.AlpineGuesthouse.domain.guest;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 @Setter(value = AccessLevel.NONE)
+@Entity
 public class Guest {
 
-    private final long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
     private Gender gender;
 
+    private Guest() {
+
+    }
+
     public Guest(String firstName, String lastName, LocalDate birthDate, Gender gender) {
 
-        this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
