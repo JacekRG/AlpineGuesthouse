@@ -20,7 +20,6 @@ import pl.jacekrg.AlpineGuesthouse.domain.guest.GuestService;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 
 @WebMvcTest(GuestController.class)
 public class GuestControllerTest {
@@ -36,7 +35,7 @@ public class GuestControllerTest {
 
         Guest guest = new Guest("Paweł", "Cwik", LocalDate.of(1986, 11, 13), Gender.MALE);
 
-        Mockito.when(guestService.findAll()).thenReturn(List.of(guest));
+        Mockito.when(guestService.findAll()).thenReturn(Arrays.asList(guest));
 
         mockMvc.perform(get("/guests"))
                 .andExpect(status().isOk())
@@ -51,7 +50,7 @@ public class GuestControllerTest {
         String postContent = "firstName=Pawel&lastName=Cwik&dateOfBirth=2021-09-15&gender=FEMALE";
 
         MockHttpServletRequestBuilder request =
-                post("/createNewGuest")
+                post("/guests")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                         .content(postContent);
 

@@ -3,6 +3,7 @@ package pl.jacekrg.AlpineGuesthouse.domain.guest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestCreationDTO;
+import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestUpdateDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,5 +24,23 @@ public class GuestService {
 
     public void createNewGuest(GuestCreationDTO dto) {
         this.repository.createNewGuest(dto.getFirstName(), dto.getLastName(), dto.getDateOfBirth(), dto.getGender());
+    }
+
+    public void removeById(long id) {
+        this.repository.removeById(id);
+    }
+
+    public Guest getById(long id) {
+        return this.repository.getById(id);
+    }
+
+    public void update(GuestUpdateDTO updatedGuest) {
+        Guest byId = this.repository.getById(updatedGuest.getId());
+        byId.update(
+                updatedGuest.getFirstName(),
+                updatedGuest.getLastName(),
+                updatedGuest.getDateOfBirth(),
+                updatedGuest.getGender()
+        );
     }
 }
