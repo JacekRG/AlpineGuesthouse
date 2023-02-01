@@ -28,11 +28,11 @@ public class ReservationControllerTest {
     @Test
     public void handleReservationCreationStepTwoValidPost() throws Exception {
 
-        String postContent = "fromDate=2022-03-12&toDate=2022-03-13&size=2&email=jacek@jacekrg";
+        String postContent = "fromDate=2022-03-12&toDate=2022-03-13&size=2&email=robert@kubicajava";
 
         LocalDate fromDate = LocalDate.parse("2022-03-12");
         LocalDate toDate = LocalDate.parse("2022-03-13");
-        String email = "jacek@jacekrg";
+        String email = "robert@kubicajava";
         int size = 2;
 
 
@@ -48,14 +48,14 @@ public class ReservationControllerTest {
                 .andExpect(model().attribute("email", email));
 
         Mockito.verify(reservationService, Mockito.times(1))
-                .getAvaiableRooms(fromDate, toDate, size);
+                .getAvailableRooms(fromDate, toDate, size);
 
     }
 
     @Test
     public void handleReservationCreationStepTwoInvalidSizePost() throws Exception {
 
-        String postContent = "fromDate=2022-03-12&toDate=2022-03-13&size=12&email=jacek@jacekrg";
+        String postContent = "fromDate=2022-03-12&toDate=2022-03-13&size=12&email=robert@kubicajava";
 
         LocalDate fromDate = LocalDate.parse("2022-03-12");
         LocalDate toDate = LocalDate.parse("2022-03-13");
@@ -72,14 +72,14 @@ public class ReservationControllerTest {
                 .andExpect(model().attributeExists("errors"));
 
         Mockito.verify(reservationService, Mockito.times(0))
-                .getAvaiableRooms(fromDate, toDate, size);
+                .getAvailableRooms(fromDate, toDate, size);
 
     }
 
     @Test
     public void handleReservationCreationStepTwoInvalidDatesPost() throws Exception {
 
-        String postContent = "fromDate=2022-03-12&toDate=2022-03-12&size=2&email=jacek@jacekrg";
+        String postContent = "fromDate=2022-03-12&toDate=2022-03-12&size=2&email=robert@kubicajava";
 
         LocalDate fromDate = LocalDate.parse("2022-03-12");
         LocalDate toDate = LocalDate.parse("2022-03-12");
@@ -96,7 +96,7 @@ public class ReservationControllerTest {
                 .andExpect(model().attributeExists("errors"));
 
         Mockito.verify(reservationService, Mockito.times(0))
-                .getAvaiableRooms(fromDate, toDate, size);
+                .getAvailableRooms(fromDate, toDate, size);
 
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.jacekrg.AlpineGuesthouse.domain.reservation.ReservationService;
@@ -53,7 +54,7 @@ public class ReservationController {
         }
 
         if(errors.isEmpty()) {
-            List<Room> rooms = this.reservationService.getAvaiableRooms(fromDate, toDate, size);
+            List<Room> rooms = this.reservationService.getAvailableRooms(fromDate, toDate, size);
             m.addAttribute("rooms", rooms);
             m.addAttribute("fromDate", fromDate);
             m.addAttribute("toDate", toDate);
@@ -63,7 +64,36 @@ public class ReservationController {
             m.addAttribute("errors", errors);
             return "reservationStepOne";
         }
+    }
 
+    @PostMapping("/create/stepthree")
+    public String finalizeReservation(long roomId,
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                      String email) {
 
+        this.reservationService.createTemporaryReservation(roomId, fromDate, toDate, email);
+        return "reservationConfirmed";
+
+    }
+
+    // /confirm/  43
+    @GetMapping("/confirm/{reservationId}")
+    public String confirmReservation(@PathVariable long reservationId, Model model) {
+
+        boolean success = this.reservationService.confirmReservation(reservationId);
+
+        model.addAttribute("success", success);
+        model.addAttribute("reservationId", reservationId);
+
+        return "reservationconfirmation";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String remove(@PathVariable long id) {
+
+        this.reservationService.removeById(id);
+
+        return "redirect:/reservations";
     }
 }

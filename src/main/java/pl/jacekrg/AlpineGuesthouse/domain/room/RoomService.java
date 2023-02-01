@@ -3,8 +3,10 @@ package pl.jacekrg.AlpineGuesthouse.domain.room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -70,4 +72,20 @@ public class RoomService {
             throw new IllegalArgumentException();
         }
     };
+
+    public List<Room> getRoomsForSize(int size) {
+
+        if(size <= 0) {
+            return new ArrayList<>();
+        }
+
+        return this.repository.findAll()
+                .stream()
+                .filter( r -> r.getSize()>=size)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<Room> getRoomById(long roomId) {
+        return this.repository.findById(roomId);
+    }
 }

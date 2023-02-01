@@ -4,7 +4,10 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.time.LocalDate;
 
 @Data
@@ -20,6 +23,8 @@ public class Guest {
     private String lastName;
     private LocalDate birthDate;
     private Gender gender;
+    private boolean vip;
+    private String customerId;
 
     Guest() {
 
@@ -31,13 +36,37 @@ public class Guest {
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
-
+        this.vip = false;
     }
 
-    public void update(String firstName, String lastName, LocalDate birthDate, Gender gender) {
+    public Guest(String firstName, String lastName, LocalDate dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName= lastName;
+        this.birthDate = dateOfBirth;
+    }
+
+    public void update(String firstName, String lastName, LocalDate birthDate, Gender gender, String customerId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
+//        this.vip = false;
+        this.customerId = customerId;
+    }
+
+    public Guest(String firstName, String lastName, LocalDate birthDate, Gender gender, boolean vip) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.vip = vip;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }

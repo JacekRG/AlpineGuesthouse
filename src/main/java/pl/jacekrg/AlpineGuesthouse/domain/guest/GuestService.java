@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestCreationDTO;
 import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestUpdateDTO;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GuestService {
@@ -23,7 +25,7 @@ public class GuestService {
 
     public void createNewGuest(GuestCreationDTO dto) {
 
-        Guest newOne = new Guest(dto.getFirstName(), dto.getLastName(), dto.getDateOfBirth(), dto.getGender());
+        Guest newOne = new Guest(dto.getFirstName(), dto.getLastName(), dto.getDateOfBirth(), dto.getGender(), dto.isVip());
         this.repository.save(newOne);
     }
 
@@ -41,8 +43,28 @@ public class GuestService {
                 updatedGuest.getFirstName(),
                 updatedGuest.getLastName(),
                 updatedGuest.getDateOfBirth(),
-                updatedGuest.getGender()
+                updatedGuest.getGender(),
+                updatedGuest.getCustomerId()
         );
         this.repository.save(byId);
+    }
+
+    public Guest createNewGuest(String firstName, String lastName, LocalDate dateOfBirth) {
+        Guest newOne = new Guest(firstName, lastName, dateOfBirth);
+        this.repository.save(newOne);
+        return newOne;
+    }
+
+    public Guest getGuestByCustomerId(String firstName, String lastName, LocalDate dateOfBirth, String customerId) {
+
+        Optional<Guest> first = this.repository.findAll()
+                .stream()
+                .filter(guest -> guest.getCustomerId().equals(customerId))
+                .filter(guest -> guest.getFirstName().equals(firstName))
+                .filter(guest -> guest.getLastName().equals(lastName))
+                .filter(guest -> guest.getBirthDate().equals(dateOfBirth))
+                .findFirst();
+
+        return first.get();
     }
 }

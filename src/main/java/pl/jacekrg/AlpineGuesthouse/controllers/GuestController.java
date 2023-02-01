@@ -1,6 +1,7 @@
 package pl.jacekrg.AlpineGuesthouse.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,18 +10,22 @@ import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestCreationDTO;
 import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestUpdateDTO;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.Guest;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.GuestService;
+import pl.jacekrg.AlpineGuesthouse.domain.reservation.ReservationService;
 
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/guests")
 public class GuestController {
 
     private GuestService guestService;
+    private ReservationService reservationService;
 
     @Autowired
-    public GuestController(GuestService service) {
+    public GuestController(GuestService service, ReservationService reservationService) {
         this.guestService = service;
+        this.reservationService = reservationService;
     }
 
     @GetMapping
@@ -70,6 +75,25 @@ public class GuestController {
         this.guestService.update(updatedGuest);
 
         return "redirect:/guests";
+    }
+
+    @PostMapping("/createAndAttachToReservation")
+    public String createAndAttachToReservation(
+            String firstName,
+            String lastName,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth,
+            long reservationId,
+            String customerId
+    ) {
+        Guest g;
+        if(customerId==null || customerId.isEmpty()) {
+            g = this.guestService.createNewGuest(firstName, lastName, dateOfBirth);
+        } else {
+            g = this.guestService.getGuestByCustomerId(firstName, lastName, dateOfBirth, customerId);
+        }
+        this.reservationService.attachGuestToReservation(g, reservationId);
+
+        return "thankyoupage";
     }
 
 }
