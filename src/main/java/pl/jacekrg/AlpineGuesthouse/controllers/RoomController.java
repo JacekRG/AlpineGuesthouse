@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestUpdateDTO;
+import pl.jacekrg.AlpineGuesthouse.domain.room.dto.RoomCreateDTO;
+import pl.jacekrg.AlpineGuesthouse.domain.room.dto.RoomUpdateDTO;
 import pl.jacekrg.AlpineGuesthouse.domain.room.Room;
 import pl.jacekrg.AlpineGuesthouse.domain.room.RoomService;
 
@@ -34,9 +35,9 @@ public class RoomController {
     }
 
     @PostMapping("/create")
-    public String handleCreateNewRoom(String number, String bedsDesc) {
+    public String handleCreateNewRoom(RoomCreateDTO dto) {
 
-        this.roomService.createNewRoom(number, bedsDesc);
+        this.roomService.createNewRoom(dto.number(), dto.bedsDesc(), dto.description(), dto.photosUrls());
 
         return "redirect:/rooms";
     }
@@ -60,9 +61,9 @@ public class RoomController {
     }
 
     @PostMapping("/edit")
-    public String editRoom(long id, String number, String bedsDesc) {
+    public String editRoom(RoomUpdateDTO dto) {
 
-        this.roomService.update(id, number, bedsDesc);
+        this.roomService.update(dto.id(), dto.number(), dto.bedsDesc(), dto.description(), dto.photosUrls());
 
         return "redirect:/rooms";
     }

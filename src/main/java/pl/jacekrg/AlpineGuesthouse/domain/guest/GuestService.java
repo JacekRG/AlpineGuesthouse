@@ -2,7 +2,7 @@ package pl.jacekrg.AlpineGuesthouse.domain.guest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestCreationDTO;
+import pl.jacekrg.AlpineGuesthouse.domain.guest.dto.GuestCreationDTO;
 import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestUpdateDTO;
 
 import java.time.LocalDate;

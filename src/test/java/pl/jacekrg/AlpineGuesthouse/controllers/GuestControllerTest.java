@@ -1,7 +1,6 @@
 package pl.jacekrg.AlpineGuesthouse.controllers;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -14,10 +13,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestCreationDTO;
+import pl.jacekrg.AlpineGuesthouse.domain.guest.dto.GuestCreationDTO;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.Gender;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.Guest;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.GuestService;
+import pl.jacekrg.AlpineGuesthouse.domain.reservation.ReservationService;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -30,6 +30,9 @@ public class GuestControllerTest {
 
     @MockBean
     private GuestService guestService;
+
+    @MockBean
+    private ReservationService reservationServiceService;
 
     @Test
     public void basic() throws Exception {
@@ -48,7 +51,7 @@ public class GuestControllerTest {
     @Test
     public void handlePost() throws Exception {
 
-        String postContent = "firstName=Pawel&lastName=Kubica&dateOfBirth=2021-09-15&gender=FEMALE";
+        String postContent = "firstName=Pawel&lastName=Kubica&dateOfBirth=2021-09-15&gender=FEMALE&vip=on";
 
         MockHttpServletRequestBuilder request =
                 post("/guests")
