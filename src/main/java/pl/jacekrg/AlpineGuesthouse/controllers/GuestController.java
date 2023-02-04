@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.dto.GuestCreationDTO;
-import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestUpdateDTO;
+import pl.jacekrg.AlpineGuesthouse.domain.guest.dto.GuestUpdateDTO;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.Guest;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.GuestService;
 import pl.jacekrg.AlpineGuesthouse.domain.reservation.ReservationService;

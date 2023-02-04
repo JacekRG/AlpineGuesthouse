@@ -1,5 +1,7 @@
 package pl.jacekrg.AlpineGuesthouse.domain.reservation;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.Guest;
 import pl.jacekrg.AlpineGuesthouse.domain.room.Room;
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private LocalDate fromDate;

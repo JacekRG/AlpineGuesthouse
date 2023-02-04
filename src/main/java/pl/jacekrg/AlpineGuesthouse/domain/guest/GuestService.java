@@ -3,7 +3,7 @@ package pl.jacekrg.AlpineGuesthouse.domain.guest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.jacekrg.AlpineGuesthouse.domain.guest.dto.GuestCreationDTO;
-import pl.jacekrg.AlpineGuesthouse.controllers.dto.GuestUpdateDTO;
+import pl.jacekrg.AlpineGuesthouse.domain.guest.dto.GuestUpdateDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -56,15 +56,6 @@ public class GuestService {
     }
 
     public Guest getGuestByCustomerId(String firstName, String lastName, LocalDate dateOfBirth, String customerId) {
-
-        Optional<Guest> first = this.repository.findAll()
-                .stream()
-                .filter(guest -> guest.getCustomerId().equals(customerId))
-                .filter(guest -> guest.getFirstName().equals(firstName))
-                .filter(guest -> guest.getLastName().equals(lastName))
-                .filter(guest -> guest.getBirthDate().equals(dateOfBirth))
-                .findFirst();
-
-        return first.get();
+        return this.repository.findTop1ByCustomerIdAndFirstNameAndLastNameAndBirthDate(customerId, firstName, lastName, dateOfBirth).get();
     }
 }

@@ -1,7 +1,9 @@
 package pl.jacekrg.AlpineGuesthouse.domain.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import pl.jacekrg.AlpineGuesthouse.domain.reservation.ReservationService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,10 +16,12 @@ import java.util.stream.Collectors;
 public class RoomService {
 
     private RoomRepository repository;
+    private ReservationService reservationService;
 
     @Autowired
-    public RoomService(RoomRepository repository) {
+    public RoomService(RoomRepository repository, @Lazy ReservationService reservationService) {
         this.repository = repository;
+        this.reservationService = reservationService;
     }
 
     public List<Room> findAll() {
@@ -42,7 +46,17 @@ public class RoomService {
 
     public void removeById(long id) {
 
+        boolean thereIsReservationForThisRoom = this.reservationService
+                .getAll()
+                .stream()
+                .anyMatch(r -> r.getRoom().getId()==id);
+
+        if(thereIsReservationForThisRoom) {
+            throw new IllegalStateException("There is reservation for this room");
+        }
+
         this.repository.deleteById(id);
+
     }
 
     public Room findById(long id) {
@@ -56,6 +70,15 @@ public class RoomService {
 
         List<BedType> beds = getBedTypesList(bedsDesc);
 
+
+        toUpdate.update(number, beds, description, photosUrls);
+
+        this.repository.save(toUpdate);
+    }
+
+    public void update(long id, String number, List<BedType> beds, String description, List<String> photosUrls) {
+
+        Room toUpdate = this.repository.getById(id);
 
         toUpdate.update(number, beds, description, photosUrls);
 
@@ -86,13 +109,39 @@ public class RoomService {
             return new ArrayList<>();
         }
 
-        return this.repository.findAll()
-                .stream()
-                .filter( r -> r.getSize()>=size)
-                .collect(Collectors.toList());
+        return this.repository.findBySizeGreaterThanEqual(size);
     }
 
     public Optional<Room> getRoomById(long roomId) {
         return this.repository.findById(roomId);
+    }
+
+    public void updateViaPatch(long id, String roomNumber, List<BedType> beds, String description, List<String> photosUrls) {
+
+        Room toUpdate = this.repository.getById(id);
+
+        String newNumber = toUpdate.getNumber();
+        if(roomNumber!=null) {
+            newNumber = roomNumber;
+        }
+
+        List<BedType> newBeds = toUpdate.getBeds();
+        if(beds!=null) {
+            newBeds = beds;
+        }
+
+        String newDescription = toUpdate.getDescription();
+        if(description!=null) {
+            newDescription = description;
+        }
+
+        List<String> newPhotosUrls = toUpdate.getPhotosUrls();
+        if(photosUrls!=null) {
+            newPhotosUrls = photosUrls;
+        }
+
+        toUpdate.update(newNumber, newBeds, newDescription, newPhotosUrls);
+
+        this.repository.save(toUpdate);
     }
 }

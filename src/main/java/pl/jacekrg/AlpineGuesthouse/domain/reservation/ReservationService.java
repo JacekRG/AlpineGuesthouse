@@ -27,10 +27,8 @@ public class ReservationService {
     @Autowired
     public ReservationService(
             ReservationRepository repository,
-            RoomService roomService,
             ApplicationEventPublisher publisher) {
         this.repository = repository;
-        this.roomService = roomService;
         this.publisher = publisher;
     }
 
@@ -142,10 +140,8 @@ public class ReservationService {
 
     public void removeUnconfirmedReservations() {
 
-        this.repository
-                .findAll()
+        this.repository.findByConfirmed(Boolean.FALSE)
                 .stream()
-                .filter(reservation -> !reservation.isConfirmed())
                 .filter(reservation -> reservation.getCreationDate().plus(60, ChronoUnit.MINUTES)
                         .isBefore(LocalDateTime.now()))
                 .forEach(reservation ->
@@ -160,5 +156,10 @@ public class ReservationService {
             byId.get().setOwner(g);
             this.repository.save(byId.get());
         }
+    }
+
+    @Autowired
+    public void setRoomService(RoomService roomService) {
+        this.roomService = roomService;
     }
 }

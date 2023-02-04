@@ -1,4 +1,4 @@
-package pl.jacekrg.AlpineGuesthouse.controllers.dto;
+package pl.jacekrg.AlpineGuesthouse.domain.guest.dto;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

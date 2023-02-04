@@ -1,12 +1,10 @@
 package pl.jacekrg.AlpineGuesthouse.controllers.api;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pl.jacekrg.AlpineGuesthouse.domain.room.RoomService;
 import pl.jacekrg.AlpineGuesthouse.domain.room.dto.RoomAvailableDTO;
@@ -17,6 +15,7 @@ import pl.jacekrg.AlpineGuesthouse.domain.room.dto.RoomCreateRestDTO;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @RestController
 public class RestRoomController {
@@ -52,5 +51,26 @@ public class RestRoomController {
     @PostMapping("api/rooms")
     public void createRoom(@RequestBody RoomCreateRestDTO dto) {
         this.roomService.createNewRoom(dto.roomNumber(), dto.beds(), dto.description(), dto.photosUrls());
+    }
+
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "403", description = "Forbidden, reservations for given room exists")
+    @DeleteMapping("api/rooms/{id}")
+    public void deleteRoom(@PathVariable long id) {
+        try {
+            this.roomService.removeById(id);
+        } catch (IllegalStateException ex) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, ex.getMessage(), ex);
+        }
+    }
+
+    @PutMapping("api/rooms/{id}")
+    public void updateRoom(@PathVariable long id, @RequestBody RoomCreateRestDTO dto) {
+        this.roomService.update(id, dto.roomNumber(), dto.beds(), dto.description(), dto.photosUrls());
+    }
+
+    @PatchMapping("api/rooms/{id}")
+    public void updateRoomViaPatch(@PathVariable long id, @RequestBody RoomCreateRestDTO dto) {
+        this.roomService.updateViaPatch(id, dto.roomNumber(), dto.beds(), dto.description(), dto.photosUrls());
     }
 }

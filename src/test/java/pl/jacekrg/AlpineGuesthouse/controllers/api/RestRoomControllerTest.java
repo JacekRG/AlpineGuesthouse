@@ -12,6 +12,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import pl.jacekrg.AlpineGuesthouse.domain.room.RoomService;
 import pl.jacekrg.AlpineGuesthouse.domain.room.dto.RoomAvailableDTO;
 import pl.jacekrg.AlpineGuesthouse.domain.reservation.ReservationService;
 import pl.jacekrg.AlpineGuesthouse.domain.room.Room;
@@ -35,6 +36,8 @@ public class RestRoomControllerTest {
 
     @MockBean
     private ReservationService reservationService;
+    @MockBean
+    private RoomService  roomService;
 
     @Autowired
     private ObjectMapper mapper;
