@@ -4,11 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Data
@@ -26,6 +22,9 @@ public class Guest {
     private Gender gender;
     private boolean vip;
     private String customerId;
+
+    @Column(name = "phone")
+    private String phoneNumber;
 
     Guest() {
 
@@ -69,5 +68,14 @@ public class Guest {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+
+        if(phoneNumber.length()>20) {
+            throw new IllegalArgumentException("Phone number to long");
+        }
+
+        this.phoneNumber = phoneNumber;
     }
 }

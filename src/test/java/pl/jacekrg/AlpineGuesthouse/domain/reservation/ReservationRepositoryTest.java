@@ -49,7 +49,7 @@ public class ReservationRepositoryTest {
 
         List<Reservation> result = this.repository.findByConfirmed(true);
 
-        assertTrue(result.get(0).getOwner().getLastName().equals("Cwik"));
+        assertTrue(result.get(0).getOwner().getLastName().equals("Kubica"));
 
         List<Reservation> result2 = this.repository.findByConfirmed(false);
 
@@ -61,7 +61,7 @@ public class ReservationRepositoryTest {
     @Test
     public void getByRoomId() {
 
-        Guest g1 = new Guest("Pawel", "Cwik", LocalDate.now());
+        Guest g1 = new Guest("Pawel", "Kubica", LocalDate.now());
         Guest g2 = new Guest("Pawel", "Kowalski", LocalDate.now());
 
         this.guestRepository.save(g1);
